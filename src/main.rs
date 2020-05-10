@@ -1,4 +1,5 @@
 use std::{env, fs, process};
+use std::error::Error;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -9,7 +10,10 @@ fn main() {
         process::exit(1);
     });
 
-    run(config);
+    if let Err(e) = run(config) {
+        println!("Application error: {}", e);
+        process::exit(1);
+    }
 }
 
 #[allow(dead_code)]
@@ -31,9 +35,10 @@ impl Config {
     }
 }
 
-fn run(config: Config) {
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents =
-        fs::read_to_string(config.filename).expect("Something went wrong reading the file.");
+        fs::read_to_string(config.filename)?; // question mark is shorthand for propogate error up
     
     println!("Contents:\n{}", contents);
+    Ok(())
 }
