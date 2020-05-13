@@ -5,7 +5,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let config = Config::new(&args)
-    .unwrap_or_else(|err| {
+    .unwrap_or_else(|err| { // takes care of parsing whether we match and error or not
         println!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
